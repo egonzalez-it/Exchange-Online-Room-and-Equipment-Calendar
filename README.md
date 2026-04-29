@@ -1,4 +1,4 @@
-# Exchange Online Room Mailbox Troubleshooting Guide
+# Exchange Online Room and Equipment Calendar Booking Troubleshooting
 
 ![PowerShell](https://img.shields.io/badge/PowerShell-Ready-blue)
 ![Microsoft 365](https://img.shields.io/badge/Microsoft%20365-Exchange%20Online-green)
@@ -9,12 +9,26 @@
 
 ## 📌 Overview
 
-This repository provides a practical troubleshooting guide for issues related to **room/equipment mailbox bookings in Exchange Online**, including:
+This repository provides a practical troubleshooting guide for issues related to **room and equipment mailbox bookings in Exchange Online**.
+
+It covers common real-world scenarios such as:
 
 - Meetings accepted but not visible
 - Calendar sync issues in Outlook
-- Room calendar showing only time but no details
+- Room calendars showing only time blocks without details
 - Permission-related visibility limitations
+
+> Based on a real L2 support incident in a production Microsoft 365 environment.
+
+---
+
+## ⚡ Quick Diagnosis
+
+| Symptom                                      | Likely Cause                |
+|---------------------------------------------|-----------------------------|
+| Meeting not visible in room calendar        | Outlook sync issue          |
+| Meeting accepted but delayed in view        | Client caching issue        |
+| Meeting shows only time (no details)        | Permission (AvailabilityOnly) |
 
 ---
 
@@ -24,25 +38,25 @@ A user reports:
 
 - A meeting was booked in a room (Board Room)
 - The room accepted the meeting
-- The meeting was not visible in the room calendar initially
-- After sync, the meeting appears but **without details**
+- The meeting was not visible initially
+- After synchronization, the meeting appears but **without details**
 
 ---
 
 ## 🔍 Root Cause Categories
 
 ### 1. Outlook Sync Issues
-- Cached Outlook not updated
+- Cached Outlook not up to date
 - Calendar pane not refreshing
-- Local client issue
+- Local client inconsistency
 
 ### 2. Room Mailbox Processing
 - Booking accepted but delayed in UI
-- Processing policies affecting visibility
+- Processing behavior impacting visibility
 
-### 3. Permissions (MOST COMMON)
-- Calendar set to **AvailabilityOnly**
-- Users cannot see subject or organizer
+### 3. Permissions (Most Common)
+- Calendar configured as **AvailabilityOnly**
+- Users can only see free/busy status
 
 ---
 
@@ -50,37 +64,41 @@ A user reports:
 
 ### Step 1 — Confirm Room Acceptance
 
-Check if the room accepted the meeting:
+Open the meeting invite and verify:
 
-- Open meeting invite
-- Look for:
-  > "Room has accepted this meeting"
+> "Room has accepted this meeting"
 
 ---
 
-### Step 2 — Validate in Outlook Web
+### Step 2 — Validate in Outlook Web (OWA)
 
 👉 https://outlook.office.com
 
-- Open Room Calendar
-- Confirm meeting exists
+- Open the room calendar
+- Confirm the meeting exists
 
 ✔️ If visible → Outlook client issue  
-❌ If not → booking issue
+❌ If not → Booking or mailbox issue  
 
 ---
 
-### Step 3 — Refresh Outlook
+### Step 3 — Refresh Outlook Client
 
 - Restart Outlook
-- Switch calendar views
-- Re-add room calendar
+- Switch between calendar views (Month / Week)
+- Remove and re-add the room calendar
 
 ---
 
 ### Step 4 — Check Calendar Permissions (Admin)
 
-#### Get current permissions:
+Connect to Exchange Online PowerShell:
+
+```powershell
+Connect-ExchangeOnline
+```
+
+Check current permissions:
 
 ```powershell
 Get-MailboxFolderPermission "Board Room:\Calendar"
