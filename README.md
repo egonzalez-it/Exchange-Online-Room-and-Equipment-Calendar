@@ -95,7 +95,7 @@ Get-MailboxFolderPermission "Board Room:\Calendar"
 | Reviewer         | Full meeting details |
 
 
-### ⚙️ Fix: Show Meeting Details
+⚙️ Fix: Show Meeting Details
 
 Recommended (Balanced Visibility)
 
