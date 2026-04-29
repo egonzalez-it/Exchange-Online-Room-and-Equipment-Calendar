@@ -9,14 +9,12 @@
 
 ## 📌 Overview
 
-This repository provides a practical troubleshooting guide for issues related to **room mailbox bookings in Exchange Online**, including:
+This repository provides a practical troubleshooting guide for issues related to **room/equipment mailbox bookings in Exchange Online**, including:
 
 - Meetings accepted but not visible
 - Calendar sync issues in Outlook
 - Room calendar showing only time but no details
 - Permission-related visibility limitations
-
-This guide is based on real-world L2 support scenarios in enterprise environments.
 
 ---
 
@@ -97,7 +95,7 @@ Get-MailboxFolderPermission "Board Room:\Calendar"
 | Reviewer         | Full meeting details |
 
 
-## ⚙️ Fix: Show Meeting Details
+### ⚙️ Fix: Show Meeting Details
 
 Recommended (Balanced Visibility)
 
@@ -121,4 +119,3 @@ After applying changes:
 3. Confirm:
     -   Meeting subject visible
     -   Organizer visible
-
